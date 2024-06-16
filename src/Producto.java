@@ -1,23 +1,24 @@
 public class Producto {
+    public String codigo;
+    public double cantidadenInv;
     public String nombre;
-    public double precio;
-    public double cantidadstock;
-    private String identificador;
+    public double costoUnitario;
+    public double costoTotal;
+    public double preciototal;
+    public double ventas;
 
     // constructor
-    public Producto(String nombre, double precio, double cantidadstock, String identificador){
+    public Producto(String codigo, double cantidadenInv, String nombre, double costoUnitario, double costoTotal,double preciototal, double ventas) {
+        this.codigo = codigo;
+        this.cantidadenInv = cantidadenInv;
         this.nombre = nombre;
-        this.precio = precio;
-        this.cantidadstock = cantidadstock;
-        this.identificador = identificador;
+        this.costoUnitario = costoUnitario;
+        this.costoTotal = costoTotal;
+        this.preciototal = preciototal;
+        this.ventas = ventas;
     }
 
-    // getter y setter
-    public void setIdentificador(String identificador){
-        this.identificador = identificador;
-    }
-    public String getIdentificador(){
-        return identificador;
-    }
+    
+    
 }
 
