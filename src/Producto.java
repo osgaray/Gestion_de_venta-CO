@@ -2,23 +2,36 @@ public class Producto {
     public String codigo;
     public double cantidadenInv;
     public String nombre;
-    public double costoUnitario;
-    public double costoTotal;
-    public double preciototal;
-    public double ventas;
+    private double costoUnitario;
+    private double costoTotal;
+    public double preciounitario;
+    public double ventas = 0;
 
     // constructor
-    public Producto(String codigo, double cantidadenInv, String nombre, double costoUnitario, double costoTotal,double preciototal, double ventas) {
+    public Producto(String codigo, double cantidadenInv, String nombre, double costoUnitario,double preciounitario, double ventas) {
         this.codigo = codigo;
         this.cantidadenInv = cantidadenInv;
         this.nombre = nombre;
         this.costoUnitario = costoUnitario;
-        this.costoTotal = costoTotal;
-        this.preciototal = preciototal;
+        this.preciounitario = preciounitario;
         this.ventas = ventas;
     }
 
-    
+    public double getCostoUnitario() {
+        return costoUnitario;
+    }
+
+    public void setCostoUnitario(double costoUnitario) {
+        this.costoUnitario = costoUnitario;
+    }
+
+    public double getCostoTotal() {
+        return costoTotal;
+    }
+
+    public void setCostoTotal(double costoTotal) {
+        this.costoTotal = costoTotal;
+    }
     
 }
 
