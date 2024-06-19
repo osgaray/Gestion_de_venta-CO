@@ -1,6 +1,10 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Inventario {
     // ruta del archivo csv como atributo privado
@@ -33,8 +37,30 @@ public class Inventario {
     }
 
     public void eliminarProducto(String idproducto){
-        // metodo para elimnar un producto del inventario usando el identificador del producto
+     // metodo para elimnar un producto del inventario usando el identificador del producto
+    List<String> ProDele = new ArrayList<>();
+    String linea;
+    
+    try (BufferedReader br = new BufferedReader(new FileReader(rutacsv))) {
+        while ((linea = br.readLine()) != null) {
+            if (!linea.contains(idproducto)) {
+                ProDele.add(linea);
+            }
+        }
+    } catch (IOException e) {
+        System.out.println("Error al leer el archivo: " + e.getMessage());
     }
+
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(rutacsv))) {
+        for (String nuevaLinea : ProDele) {
+            bw.write(nuevaLinea);
+            bw.newLine();
+        }
+    } catch (IOException e) {
+        System.out.println("Error al escribir en el archivo: " + e.getMessage());
+    }
+}
+
 
     public void generarInforme(){
         // metodo para genera un informe del inventario

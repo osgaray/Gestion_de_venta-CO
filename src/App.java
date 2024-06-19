@@ -18,7 +18,8 @@ public class App {
                 System.out.println("1. Realizar una venta");
                 System.out.println("2. Realizar una compra");
                 System.out.println("3. Generar informe");
-                System.out.println("4. Salir");
+                System.out.println("4. Eliminar productos");
+                System.out.println("5. Salir");
                 int opcion = input.nextInt();
                 input.nextLine();
                 switch (opcion) {
@@ -40,8 +41,12 @@ public class App {
                         
                         break;
                     case 4:
-                        
+                        System.out.println("\nIngrese el código del producto a eliminar: ");
+                        String codigoEliminar = input.nextLine();
+                        inv.eliminarProducto(codigoEliminar);
+                        System.out.println("Producto eliminado exitosamente.");
                         break;
+                    
                 
                     default:
                         break;
