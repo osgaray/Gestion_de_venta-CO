@@ -49,6 +49,7 @@ public class App {
                     
                 
                     default:
+                        continuar = false;
                         break;
                 }
 

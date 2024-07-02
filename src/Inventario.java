@@ -3,6 +3,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,16 +25,55 @@ public class Inventario {
         // metodo para eliminar el archivo usando rutacsv
     }
 
-    public void agregarProducto(Producto producto){
-        // metodo para agregar un producto al inventario
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(rutacsv, true));){
-            writer.newLine();
-            writer.write(producto.codigo+","+producto.cantidadenInv+","+producto.nombre+","+producto.getCostoUnitario()+","+producto.getCostoTotal()+","+producto.preciounitario+","+producto.ventas);
-            System.out.println("Producto agregado exitosamente");
-        } catch (IOException IOEx) {
-            System.out.println(IOEx);
+    public void agregarProducto(Producto producto) {
+        try {
+            // Abrir el archivo CSV en modo de solo lectura
+            RandomAccessFile raf = new RandomAccessFile(rutacsv, "rw");
+    
+            String linea;
+            long posicionInicial = 0;
+            boolean encontrado = false;
+    
+            // Iterar sobre cada línea del archivo CSV
+            while ((linea = raf.readLine()) != null) {
+                String[] campos = linea.split(",");
+    
+                // Verificar si el código del producto coincide con el código del producto a agregar
+                if (campos[0].equals(producto.codigo)) {
+                    encontrado = true;
+    
+                    // Incrementar la cantidad del producto existente
+                    float cantidad = Float.parseFloat(campos[1]);
+                    cantidad += producto.cantidadenInv;
+                    campos[1] = String.valueOf(cantidad);
+    
+                    // Volver a la posición inicial de la línea y actualizarla en el archivo
+                    raf.seek(posicionInicial);
+                    raf.writeBytes(String.join(",", campos));
+                    break;
+                }
+    
+                // Guardar la posición inicial de la línea actual
+                posicionInicial = raf.getFilePointer();
+            }
+    
+            // Cerrar el archivo RandomAccessFile
+            raf.close();
+    
+            // Si no se encontró el producto, agregar una nueva línea al archivo CSV
+            if (!encontrado) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(rutacsv, true))) {
+                    writer.newLine();
+                    writer.write(producto.codigo + "," + producto.cantidadenInv + "," + producto.nombre + "," +
+                            producto.getCostoUnitario() + "," + producto.getCostoTotal() + "," + producto.preciounitario + "," + producto.ventas);
+                    System.out.println("Producto agregado exitosamente");
+                } catch (IOException IOEx) {
+                    System.out.println(IOEx);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        
     }
 
     public void eliminarProducto(String idproducto){
