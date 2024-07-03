@@ -4,11 +4,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Scanner;
 
-import javax.swing.text.DateFormatter;
-
 public class App {
 
     public static Scanner input = new Scanner(System.in);
+
     public static void main(String[] args) throws Exception {
         System.out.println("-- GESTIÓN DE INVENTARIO Y CAJA --");
         Inventario inv = new Inventario();
@@ -49,12 +48,12 @@ public class App {
                             System.out.println("Precio del producto: ");
                             precio = input.nextDouble();
                             input.nextLine();
-                        } while (costo>=precio);
-                        Producto pro_agregar = new Producto(cod,cantPro,nombre,costo,costo*cantPro,precio,0);
+                        } while (costo >= precio);
+                        Producto pro_agregar = new Producto(cod, cantPro, nombre, costo, costo * cantPro, precio, 0);
                         inv.agregarProducto(pro_agregar);
                         break;
                     case 3:
-                        
+
                         break;
                     case 4:
                         System.out.println("\nIngrese el código del producto a eliminar: ");
@@ -67,18 +66,19 @@ public class App {
                         inv.productosBajosStock();
                     case 6:
                         System.out.println("Saliendo...");
-                        System.out.println("Ultimo uso registrado: " + LocalDate.now()+" a las "+LocalTime.now());
+                        System.out.println("Ultimo uso registrado: " + LocalDate.now() + " a las " + LocalTime.now());
                         continuar = false;
                         break;
                     default:
-                        System.out.println("Opcion no valida");;
+                        System.out.println("Opcion no valida");
+                        ;
                         break;
                 }
 
             } catch (Exception e) {
                 System.out.println(e);
             }
-            
+
         } while (continuar);
     }
 }
