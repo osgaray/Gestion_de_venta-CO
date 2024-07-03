@@ -43,13 +43,14 @@ public class Inventario {
                     encontrado = true;
     
                     // Incrementar la cantidad del producto existente
-                    float cantidad = Float.parseFloat(campos[1]);
+                    double cantidad = Float.parseFloat(campos[1]);
                     cantidad += producto.cantidadenInv;
                     campos[1] = String.valueOf(cantidad);
     
                     // Volver a la posición inicial de la línea y actualizarla en el archivo
                     raf.seek(posicionInicial);
                     raf.writeBytes(String.join(",", campos));
+                    System.out.println("Producto agregado");
                     break;
                 }
     
@@ -81,6 +82,7 @@ public class Inventario {
     List<String> ProDele = new ArrayList<>();
     String linea;
     
+    // obtener todas las lineas del archivo MENOS el producto que se desea eliminar
     try (BufferedReader br = new BufferedReader(new FileReader(rutacsv))) {
         while ((linea = br.readLine()) != null) {
             if (!linea.contains(idproducto)) {
@@ -91,23 +93,37 @@ public class Inventario {
         System.out.println("Error al leer el archivo: " + e.getMessage());
     }
 
+    // escribir todas las lineas del archivo sin el producto a eliminar
     try (BufferedWriter bw = new BufferedWriter(new FileWriter(rutacsv))) {
         for (String nuevaLinea : ProDele) {
             bw.write(nuevaLinea);
-            bw.newLine();
+            // si el producto a escribir no es el ultimo, agregar un salto de linea
+            if (ProDele.get(ProDele.size()-1)!=nuevaLinea){
+                bw.newLine();
+            }
+
         }
     } catch (IOException e) {
         System.out.println("Error al escribir en el archivo: " + e.getMessage());
     }
 }
 
-
-    public void generarInforme(){
-        // metodo para genera un informe del inventario
-    }
-
     public void productosBajosStock(){
-        // metodo para generar un informe de los productos con stock bajo
-        // usar recursividad con el metodo generarInforme (si se puede, sino pues no)
+        String producto;
+        
+        try (BufferedReader br = new BufferedReader(new FileReader(rutacsv))) {
+            br.readLine();
+            while ((producto = br.readLine()) != null) {
+                String[] listTemp = producto.split(",");
+                double cantidad= Double.parseDouble(listTemp[1]);
+                if (cantidad<5) {
+                    System.out.println("El producto con el codigo "+listTemp[0]+" tiene un stock bajo de: "+listTemp[01]);
+                    
+                    System.out.println();
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo: " + e.getMessage());
+        }        
     }
 }
