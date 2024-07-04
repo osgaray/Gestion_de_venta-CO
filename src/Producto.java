@@ -8,11 +8,12 @@ public class Producto {
     public double ventas = 0;
 
     // constructor
-    public Producto(String codigo, double cantidadenInv, String nombre, double costoUnitario,double preciounitario, double ventas) {
+    public Producto(String codigo, double cantidadenInv, String nombre, double costoUnitario,double costoTotal,double preciounitario, double ventas) {
         this.codigo = codigo;
         this.cantidadenInv = cantidadenInv;
         this.nombre = nombre;
         this.costoUnitario = costoUnitario;
+        this.costoTotal = costoTotal;
         this.preciounitario = preciounitario;
         this.ventas = ventas;
     }
