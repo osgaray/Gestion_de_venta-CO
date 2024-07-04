@@ -9,22 +9,9 @@ import java.util.List;
 
 public class Inventario {
     // ruta del archivo csv como atributo privado
-    public String rutacsv = "src\\\\Datos\\\\Inventario.csv";
-    
-    public void crearNuevoInventario(){
-        // crear archivo csv
-        try (FileWriter writer = new FileWriter(rutacsv);){
-            // encabezado
-            writer.write("CODIGO,CANTIDAD EN INVENTARIO,NOMBRE,COSTO UNITARIO,COSTO TOTAL,PRECIO UNITARIO,VENTAS");
-        } catch (IOException IOEx) {
-                System.out.println(IOEx);
-        } 
-    }
+    public String rutacsv = "src\\\\Datos\\\\Inventario.csv";    
 
-    public void eliminarInventario(){
-        // metodo para eliminar el archivo usando rutacsv
-    }
-
+    // metodo para agregar producto al inventario
     public void agregarProducto(Producto producto) {
         try {
             // Abrir el archivo CSV en modo de solo lectura
@@ -65,8 +52,7 @@ public class Inventario {
             if (!encontrado) {
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(rutacsv, true))) {
                     writer.newLine();
-                    writer.write(producto.codigo + "," + producto.cantidadenInv + "," + producto.nombre + "," +
-                            producto.getCostoUnitario() + "," + producto.getCostoTotal() + "," + producto.preciounitario + "," + producto.ventas);
+                    writer.write(producto.codigo + "," + producto.cantidadenInv + "," + producto.nombre + "," +producto.getCostoUnitario() + "," + producto.getCostoTotal() + "," + producto.preciounitario + "," + producto.ventas);
                     System.out.println("Producto agregado exitosamente");
                 } catch (IOException IOEx) {
                     System.out.println(IOEx);
@@ -76,38 +62,93 @@ public class Inventario {
             System.out.println(e);
         }
     }
-
-    public void eliminarProducto(String idproducto){
-     // metodo para elimnar un producto del inventario usando el identificador del producto
-    List<String> ProDele = new ArrayList<>();
-    String linea;
+    // metodo para disminuir la cantidad de productos en el inventario
+    public void disminuirProducto(String idproducto){
+        try {
+            // Abrir el archivo CSV en modo de solo lectura
+            RandomAccessFile raf = new RandomAccessFile(rutacsv, "rw");
     
-    // obtener todas las lineas del archivo MENOS el producto que se desea eliminar
-    try (BufferedReader br = new BufferedReader(new FileReader(rutacsv))) {
-        while ((linea = br.readLine()) != null) {
-            if (!linea.contains(idproducto)) {
-                ProDele.add(linea);
+            String linea;
+            long posicionInicial = 0;
+            boolean encontrado = false;
+    
+            // Iterar sobre cada línea del archivo CSV
+            while ((linea = raf.readLine()) != null) {
+                String[] campos = linea.split(",");
+    
+                // Verificar si el código del producto coincide con el código del producto a agregar
+                if (campos[0].equals(idproducto)) {
+                    encontrado = true;
+    
+                    // Incrementar la cantidad del producto existente
+                    double cantidad = Float.parseFloat(campos[6]);
+                    cantidad++;
+                    campos[6] = String.valueOf(cantidad);
+    
+                    // Volver a la posición inicial de la línea y actualizarla en el archivo
+                    raf.seek(posicionInicial);
+                    raf.writeBytes(String.join(",", campos));
+                    System.out.println("Venta agregada");
+                    break;
+                }
+    
+                // Guardar la posición inicial de la línea actual
+                posicionInicial = raf.getFilePointer();
             }
+    
+            // Cerrar el archivo RandomAccessFile
+            raf.close();
+    
+            // Si no se encontró el producto, agregar una nueva línea al archivo CSV
+            if (!encontrado) {
+                System.out.println("El producto no esta en el inventario");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
-    } catch (IOException e) {
-        System.out.println("Error al leer el archivo: " + e.getMessage());
     }
 
-    // escribir todas las lineas del archivo sin el producto a eliminar
-    try (BufferedWriter bw = new BufferedWriter(new FileWriter(rutacsv))) {
-        for (String nuevaLinea : ProDele) {
-            bw.write(nuevaLinea);
-            // si el producto a escribir no es el ultimo, agregar un salto de linea
-            if (ProDele.get(ProDele.size()-1)!=nuevaLinea){
-                bw.newLine();
+
+    // metodo para elimnar un producto del inventario usando el identificador del producto
+    public void eliminarProducto(String idproducto){
+        List<String> ProDele = new ArrayList<>();
+        String linea;
+        boolean encontrado = false;
+        
+        // obtener todas las lineas del archivo MENOS el producto que se desea eliminar
+        try (BufferedReader br = new BufferedReader(new FileReader(rutacsv))) {
+            while ((linea = br.readLine()) != null) {
+                if (!linea.contains(idproducto)) {
+                    ProDele.add(linea);
+                }else{
+                    encontrado=true;
+                }
             }
-
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo: " + e.getMessage());
         }
-    } catch (IOException e) {
-        System.out.println("Error al escribir en el archivo: " + e.getMessage());
-    }
-}
 
+        // escribir todas las lineas del archivo sin el producto a eliminar
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(rutacsv))) {
+            for (String nuevaLinea : ProDele) {
+                bw.write(nuevaLinea);
+                // si el producto a escribir no es el ultimo, agregar un salto de linea
+                if (ProDele.get(ProDele.size()-1)!=nuevaLinea){
+                    bw.newLine();
+                }
+
+            }
+        } catch (IOException e) {
+            System.out.println("Error al escribir en el archivo: " + e.getMessage());
+        }
+
+        if (encontrado){
+            System.out.println("\nProducto eliminado exitosamente\n");
+        }else{
+            System.out.println("\nEl producto no existe\n");
+        }
+    }
+    // imprimir los productos con bajas en stock
     public void productosBajosStock(){
         String producto;
         
