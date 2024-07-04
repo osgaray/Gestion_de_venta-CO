@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class App {
 
     public static Scanner input = new Scanner(System.in);
+
     public static void main(String[] args) throws Exception {
         System.out.println("-- GESTIÓN DE INVENTARIO Y CAJA --");
         Inventario inv = new Inventario();
@@ -81,7 +82,7 @@ public class App {
                         
                         break;
                     case 3:
-                        
+
                         break;
                     case 4:
                         System.out.println("\nIngrese el código del producto a eliminar: ");
@@ -93,18 +94,19 @@ public class App {
                         inv.productosBajosStock();
                     case 6:
                         System.out.println("Saliendo...");
-                        System.out.println("Ultimo uso registrado: " + LocalDate.now()+" a las "+LocalTime.now());
+                        System.out.println("Ultimo uso registrado: " + LocalDate.now() + " a las " + LocalTime.now());
                         continuar = false;
                         break;
                     default:
-                        System.out.println("Opcion no valida");;
+                        System.out.println("Opcion no valida");
+                        ;
                         break;
                 }
 
             } catch (Exception e) {
                 System.out.println(e);
             }
-            
+
         } while (continuar);
     }
 }
