@@ -63,7 +63,7 @@ public class Inventario {
         }
     }
     // metodo para disminuir la cantidad de productos en el inventario
-    public void disminuirProducto(String idproducto){
+    public void disminuirProducto(String idproducto, double cantidad){
         try {
             // Abrir el archivo CSV en modo de solo lectura
             RandomAccessFile raf = new RandomAccessFile(rutacsv, "rw");
@@ -80,10 +80,18 @@ public class Inventario {
                 if (campos[0].equals(idproducto)) {
                     encontrado = true;
     
-                    // Incrementar la cantidad del producto existente
-                    double cantidad = Float.parseFloat(campos[6]);
-                    cantidad++;
-                    campos[6] = String.valueOf(cantidad);
+                    // Incrementar la cantidad de ventas y disminuir la cantidad de productos
+                    double ventas = Float.parseFloat(campos[6]);
+                    double cantidadProductos = Float.parseFloat(campos[1]);
+                    ventas =+ cantidad;
+                    cantidadProductos = cantidadProductos - cantidad;
+                    campos[6] = String.valueOf(ventas);
+                    campos[1] = String.valueOf(cantidadProductos);
+                    // actualizar costo total
+                    double costo = Float.parseFloat(campos[3]);
+                    double costototal = Float.parseFloat(campos[4]);
+                    costototal = costo * cantidadProductos;
+                    campos[4] = String.valueOf(costototal);
     
                     // Volver a la posición inicial de la línea y actualizarla en el archivo
                     raf.seek(posicionInicial);

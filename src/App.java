@@ -23,7 +23,7 @@ public class App {
                 System.out.println("3. Generar informe");
                 System.out.println("4. Eliminar productos");
                 System.out.println("5. Mostrar productos con bajo stock");
-                System.out.println("6. Crear un nuevo inventario");
+                System.out.println("6. Salir");
 
                 int opcion = input.nextInt();
                 input.nextLine();
@@ -32,7 +32,11 @@ public class App {
                         System.out.println("\nDetalles del producto que se ha vendido: ");
                         System.out.println("Codigo del producto: ");
                         String codigo = input.nextLine();
-                        inv.disminuirProducto(codigo);
+                        System.out.println("Cantidad vendida: ");
+                        double cantidad = input.nextDouble();
+                        input.nextLine();
+                        inv.disminuirProducto(codigo, cantidad);
+
                         break;
                     case 2:
                         System.out.println("\nDetalles del producto que se ha comprado: ");
@@ -69,7 +73,7 @@ public class App {
                                         double ventas= Double.parseDouble(productoexistente[6]);
                                         Producto pro_agregar = new Producto(cod,cantPro,nombre,costo,costo*cantPro,precio,ventas);
                                         inv.agregarProducto(pro_agregar);
-                                } else{
+                                } else {
                                     double costo = Double.parseDouble(productoexistente[3]);
                                     double precio = Double.parseDouble(productoexistente[5]);
                                     Producto pro_agregar = new Producto(cod,cantPro,productoexistente[2],costo,costo*cantPro,precio,0);
@@ -92,6 +96,7 @@ public class App {
                     case 5:
                         System.out.println("Productos con bajo stock: ");
                         inv.productosBajosStock();
+                        break;
                     case 6:
                         System.out.println("Saliendo...");
                         System.out.println("Ultimo uso registrado: " + LocalDate.now() + " a las " + LocalTime.now());
