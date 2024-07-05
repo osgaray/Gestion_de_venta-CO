@@ -7,6 +7,7 @@ public class App {
         System.out.println("-- GESTIÓN DE INVENTARIO Y CAJA --");
         Inventario inv = new Inventario();
 
+        Informe info = new Informe();
         Producto prod = new Producto("001",10, "Pan", 0.5, 1, 2);
 
         inv.agregarProducto(prod);
@@ -37,7 +38,7 @@ public class App {
                         Producto pro_agregar = new Producto(cod,cantPro,nombre,0,0,0);
                         break;
                     case 3:
-                        
+                        info.generarInforme();
                         break;
                     case 4:
                         
