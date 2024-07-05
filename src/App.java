@@ -36,7 +36,6 @@ public class App {
                         double cantidad = input.nextDouble();
                         input.nextLine();
                         inv.disminuirProducto(codigo, cantidad);
-
                         break;
                     case 2:
                         System.out.println("\nDetalles del producto que se ha comprado: ");

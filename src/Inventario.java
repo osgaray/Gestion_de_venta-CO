@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Inventario {
-    // ruta del archivo csv como atributo privado
+    // ruta del archivo csv como atributo
     public String rutacsv = "src\\\\Datos\\\\Inventario.csv";    
 
     // metodo para agregar producto al inventario
@@ -92,6 +92,12 @@ public class Inventario {
                     double costototal = Float.parseFloat(campos[4]);
                     costototal = costo * cantidadProductos;
                     campos[4] = String.valueOf(costototal);
+
+                    // mostrar el precio a cobrar
+                    double precio = Float.parseFloat(campos[5]);
+                    double precioaPagar = precio * cantidad;
+                    
+                    System.out.println("El precio a cobrar es: " + precioaPagar);
     
                     // Volver a la posición inicial de la línea y actualizarla en el archivo
                     raf.seek(posicionInicial);
