@@ -10,8 +10,6 @@ import java.util.List;
 public class Informe {
     public String rutacsv = "src\\\\Datos\\\\Inventario.csv";
     public static LocalDate fecha = LocalDate.now();
-    public static double ganancias;
-
 
     public void generarInforme() {
         try (BufferedReader br = new BufferedReader(new FileReader(rutacsv))) {
@@ -53,5 +51,6 @@ public class Informe {
         } catch (IOException e) {
             System.err.println("Error al leer el archivo CSV: " + e.getMessage());
         }
+        System.out.println("\n\tInforme realizado el: "+fecha);
     }
 }
