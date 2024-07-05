@@ -10,7 +10,7 @@ public class App {
     public static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
-        System.out.println("-- GESTIÓN DE INVENTARIO Y CAJA --");
+        System.out.println("---- GESTIÓN DE INVENTARIO ----");
         Inventario inv = new Inventario();
         Informe info = new Informe();
 
