@@ -10,7 +10,8 @@ public class App {
     public static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
-        System.out.println("---- GESTIÓN DE INVENTARIO ----");
+        System.out.println("\tGesti\u00F3n de inventario");
+        System.out.println();
         Inventario inv = new Inventario();
         Informe info = new Informe();
 
@@ -18,13 +19,21 @@ public class App {
         do {
             try {
                 // menu
-                System.out.println("Elige la opcion a realizar: ");
-                System.out.println("1. Realizar una venta");
-                System.out.println("2. Abastecer inventario");
-                System.out.println("3. Generar informe");
-                System.out.println("4. Eliminar productos");
-                System.out.println("5. Mostrar productos con bajo stock");
-                System.out.println("6. Salir");
+                System.out.println("\tElige la opcion a realizar: ");
+                System.out.println();
+                System.out.println("|--------------------------------------------|");
+                System.out.println("|\t1. Realizar una venta                |");
+                System.out.println("|\t2. Abastecer inventario              |");
+                System.out.println("|\t3. Generar informe                   |");
+                System.out.println("|\t4. Eliminar productos                |");
+                System.out.println("|\t5. Mostrar productos con bajo stock  |");
+                System.out.println("|\t6. Salir                             |");
+                System.out.println("|--------------------------------------------|");
+                System.out.println();
+                while (!input.hasNextInt()) {
+                    System.out.println("Ingrese una opci\u00F3n:  ");
+                    input.next();
+                }
 
                 int opcion = input.nextInt();
                 input.nextLine();
@@ -43,11 +52,24 @@ public class App {
                         System.out.println("Codigo del producto: ");
                         String cod = input.nextLine();
                         System.out.println("Cantidad de producto/s: ");
-                        double cantPro = input.nextDouble();
-                        input.nextLine();
+                        int cantPro = 0;
+                        while (true) {
+                            if (input.hasNextInt()) {
+                                cantPro = input.nextInt();
+                                input.nextLine();
+                                if (cantPro >= 1) {
+                                    break; // Salir del bucle si la cantidad es válida
+                                } else {
+                                    System.out.println("Ingrese una cantidad mayor que cero: ");
+                                }
+                            } else {
+                                System.out.println("Ingrese una cantidad entera: ");
+                                input.next(); // Descarta la entrada no válida
+                            }
+                        }
                         // verificar si el producto ya esta en el inventario
                         String linea;
-        
+
                         // obtener todas las lineas del archivo MENOS el producto que se desea eliminar
                         try (BufferedReader br = new BufferedReader(new FileReader(inv.rutacsv))) {
                             // saltarse el encabezado
@@ -55,35 +77,62 @@ public class App {
                             boolean encontrado = false;
                             while ((linea = br.readLine()) != null && !encontrado) {
                                 String[] productoexistente = linea.split(",");
-                                if (!linea.contains(cod)) {
+                                if (productoexistente[0].equals(cod)) {
                                     encontrado = true;
                                     System.out.println("Nombre del producto: ");
                                     String nombre = input.nextLine();
-                                    double costo;
-                                    double precio;
+                                    int costo = 0;
+                                    int precio;
                                     do {
                                         System.out.println("El costo debe ser menor que el precio");
                                         System.out.println("Costo del producto: ");
-                                        costo = input.nextDouble();
-                                        input.nextLine();
+                                        while (true) {
+                                            if (input.hasNextInt()) {
+                                                costo = input.nextInt();
+                                                input.nextLine();
+                                                if (costo >= 1) {
+                                                    break; // Salir del bucle si la cantidad es válida
+                                                } else {
+                                                    System.out.println("Ingrese una cantidad mayor que cero: ");
+                                                }
+                                            } else {
+                                                System.out.println("Ingrese una cantidad entera: ");
+                                                input.next(); // Descarta la entrada no válida
+                                            }
+                                        }
+
                                         System.out.println("Precio del producto: ");
-                                        precio = input.nextDouble();
-                                        input.nextLine();
-                                    } while (costo>=precio);
-                                        double ventas= Double.parseDouble(productoexistente[6]);
-                                        Producto pro_agregar = new Producto(cod,cantPro,nombre,costo,costo*cantPro,precio,ventas);
-                                        inv.agregarProducto(pro_agregar);
+                                        while (true) {
+                                            if (input.hasNextInt()) {
+                                                precio = input.nextInt();
+                                                input.nextLine();
+                                                if (precio >= 1) {
+                                                    break; // Salir del bucle si la cantidad es válida
+                                                } else {
+                                                    System.out.println("Ingrese una cantidad mayor que cero: ");
+                                                }
+                                            } else {
+                                                System.out.println("Ingrese una cantidad entera: ");
+                                                input.next(); // Descarta la entrada no válida
+                                            }
+                                        }
+                                    } while (costo >= precio);
+                                    double ventas = Double.parseDouble(productoexistente[6]);
+                                    Producto pro_agregar = new Producto(cod, cantPro, nombre, costo, costo * cantPro,
+                                            precio, ventas);
+                                    inv.agregarProducto(pro_agregar);
                                 } else {
                                     double costo = Double.parseDouble(productoexistente[3]);
                                     double precio = Double.parseDouble(productoexistente[5]);
-                                    Producto pro_agregar = new Producto(cod,cantPro,productoexistente[2],costo,costo*cantPro,precio,0);
+                                    Producto pro_agregar = new Producto(cod, cantPro, productoexistente[2], costo,
+                                            costo * cantPro, precio, 0);
                                     inv.agregarProducto(pro_agregar);
                                 }
                             }
                         } catch (IOException e) {
                             System.out.println("Error al leer el archivo: " + e.getMessage());
                         }
-                        
+
                         break;
                     case 3:
                         System.out.println("Generación de informe: ");
@@ -105,7 +154,6 @@ public class App {
                         break;
                     default:
                         System.out.println("Opcion no valida");
-                        ;
                         break;
                 }
 

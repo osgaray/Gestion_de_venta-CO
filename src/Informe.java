@@ -23,20 +23,22 @@ public class Informe {
             }
 
             // Ordenar los datos por cantidad en inventario de mayor a menor
-            Collections.sort(datos, Comparator.comparing((String[] fila) -> Double.parseDouble(fila[1]), Comparator.reverseOrder()));
+            Collections.sort(datos,
+                    Comparator.comparing((String[] fila) -> Double.parseDouble(fila[1]), Comparator.reverseOrder()));
 
             // Calcular la longitud máxima de cada columna, incluyendo el encabezado
             int[] longitudesColumnas = new int[encabezado.length];
             for (String[] fila : datos) {
                 for (int i = 0; i < fila.length; i++) {
-                    longitudesColumnas[i] = Math.max(longitudesColumnas[i], Math.max(fila[i].length(), encabezado[i].length()));
+                    longitudesColumnas[i] = Math.max(longitudesColumnas[i],
+                            Math.max(fila[i].length(), encabezado[i].length()));
                 }
             }
 
             // Mostrar el encabezado
             StringBuilder lineaFormateada = new StringBuilder();
             for (int i = 0; i < encabezado.length; i++) {
-                lineaFormateada.append(String.format("%-" + longitudesColumnas[i] + "s     ", encabezado[i]));
+                lineaFormateada.append(String.format("%-" + longitudesColumnas[i] + "s    ", encabezado[i]));
             }
             System.out.println(lineaFormateada.toString().trim());
 
@@ -44,13 +46,13 @@ public class Informe {
             for (String[] fila : datos) {
                 lineaFormateada = new StringBuilder();
                 for (int i = 0; i < fila.length; i++) {
-                    lineaFormateada.append(String.format("%-" + longitudesColumnas[i] + "s     ", fila[i]));
+                    lineaFormateada.append(String.format("%-" + longitudesColumnas[i] + "s    ", fila[i]));
                 }
                 System.out.println(lineaFormateada.toString().trim());
             }
         } catch (IOException e) {
             System.err.println("Error al leer el archivo CSV: " + e.getMessage());
         }
-        System.out.println("\n\tInforme realizado el: "+fecha);
+        System.out.println("\n\tInforme realizado el: " + fecha);
     }
 }
