@@ -12,6 +12,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         System.out.println("-- GESTIÓN DE INVENTARIO Y CAJA --");
         Inventario inv = new Inventario();
+        Informe info = new Informe();
 
         boolean continuar = true;
         do {
@@ -85,7 +86,8 @@ public class App {
                         
                         break;
                     case 3:
-
+                        System.out.println("Generación de informe: ");
+                        info.generarInforme();
                         break;
                     case 4:
                         System.out.println("\nIngrese el código del producto a eliminar: ");
